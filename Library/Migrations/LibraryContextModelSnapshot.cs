@@ -101,7 +101,7 @@ namespace Library.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "28b144b6-7780-477b-8ccb-4655b8694cb2",
+                            ConcurrencyStamp = "735db25f-7b0d-438f-9e40-39644d618ee5",
                             Email = "admin@admin.admin",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -109,10 +109,10 @@ namespace Library.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.ADMIN",
                             NormalizedUserName = "ADMIN@ADMIN.ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIIKq39KcWf9SKdHMpKqtZYKzC1c4ogc9W64OdSNPQLTmzucTfYNetx8QYZklOYVFA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPCiguyTCV9zf3DIBLTlNT8oeIeAoNl7JO07I0IO2u15Z8xxgePdztb4tB2jVWIi2Q==",
                             PhoneNumber = "123456789",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f435ea9f-a7e5-40d9-84d8-123ecf1b004b",
+                            SecurityStamp = "635d681f-87fd-4d43-b450-4dbdfa9b4cb5",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.admin"
                         },
@@ -120,7 +120,7 @@ namespace Library.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb8",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ed0b68fe-66bf-4995-8b21-1e77f242fcab",
+                            ConcurrencyStamp = "c01906df-647e-4529-bcd3-53d239fc97cd",
                             Email = "user@user.user",
                             EmailConfirmed = false,
                             FirstName = "User",
@@ -128,10 +128,10 @@ namespace Library.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@USER.USER",
                             NormalizedUserName = "USER@USER.USER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHzzA9gu2o+CEMecQGP7iQEeJ1YMUqrJROIY3S115oyaLOw99asUgbKnRdi5imdIBQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENdkFp+Zsa2nHW3v3stYKlpCRhVeYVjzdrVt2VYkfRAgAr19VvWLLZq9XTDZQKzpEw==",
                             PhoneNumber = "987654321",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ac28b5d1-f049-4a5c-b094-1ee370986a5d",
+                            SecurityStamp = "9123f6c7-5f48-4176-a027-50c115c3672b",
                             TwoFactorEnabled = false,
                             UserName = "user@user.user"
                         });
@@ -233,6 +233,36 @@ namespace Library.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("Library.Models.Reserve", b =>
+                {
+                    b.Property<int>("id_rental")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_rental"), 1L, 1);
+
+                    b.Property<int>("Books")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LibraryUser")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("date_from")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime>("date_to")
+                        .HasColumnType("date");
+
+                    b.HasKey("id_rental");
+
+                    b.HasIndex("Books");
+
+                    b.HasIndex("LibraryUser");
+
+                    b.ToTable("Reserve");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -263,14 +293,14 @@ namespace Library.Migrations
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "100ba2bd-0094-4b3e-b4dd-b6950fec8517",
+                            ConcurrencyStamp = "3c599fd3-33e5-4576-90c0-c220b02556ef",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7211",
-                            ConcurrencyStamp = "c8d2921a-d3f1-4019-b8bf-3fb099b5623b",
+                            ConcurrencyStamp = "af721511-8485-4ce5-aa8d-65f218618b7b",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -396,6 +426,25 @@ namespace Library.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Library.Models.Reserve", b =>
+                {
+                    b.HasOne("Library.Models.Books", "book")
+                        .WithMany()
+                        .HasForeignKey("Books")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Library.Areas.Identity.Data.LibraryUser", "user")
+                        .WithMany()
+                        .HasForeignKey("LibraryUser")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("book");
+
+                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

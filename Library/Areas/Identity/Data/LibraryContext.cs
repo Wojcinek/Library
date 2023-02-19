@@ -15,6 +15,10 @@ public class LibraryContext : IdentityDbContext<LibraryUser>
 
     public DbSet<Books> Books { get; set; }
     public DbSet<Category> Categories { get; set; }
+    public DbSet<Reserve> Reserve { get; set; }
+
+
+    public DbSet<LibraryUser> User { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Library.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    [Migration("20230217121023_LibraryContextNew")]
-    partial class LibraryContextNew
+    [Migration("20230217134229_AllNew")]
+    partial class AllNew
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -103,7 +103,7 @@ namespace Library.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "892362f8-cf0e-4770-9db0-3af998d977f8",
+                            ConcurrencyStamp = "735db25f-7b0d-438f-9e40-39644d618ee5",
                             Email = "admin@admin.admin",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -111,10 +111,10 @@ namespace Library.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.ADMIN",
                             NormalizedUserName = "ADMIN@ADMIN.ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAENYD7z6x4D1zU7IkvlXJUXjN5bGGXcxP9EITfcLQus9ozUh52aKvrqFJYdA4xBgaRw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPCiguyTCV9zf3DIBLTlNT8oeIeAoNl7JO07I0IO2u15Z8xxgePdztb4tB2jVWIi2Q==",
                             PhoneNumber = "123456789",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c58d06bf-0ab2-4e13-829b-d3a1ae781120",
+                            SecurityStamp = "635d681f-87fd-4d43-b450-4dbdfa9b4cb5",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.admin"
                         },
@@ -122,7 +122,7 @@ namespace Library.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb8",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8e9f873e-64b3-4aa3-a45b-e8b351d35f2a",
+                            ConcurrencyStamp = "c01906df-647e-4529-bcd3-53d239fc97cd",
                             Email = "user@user.user",
                             EmailConfirmed = false,
                             FirstName = "User",
@@ -130,10 +130,10 @@ namespace Library.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@USER.USER",
                             NormalizedUserName = "USER@USER.USER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKYyYR0QVCNH7fC4/W17oh+RajQZjDziGrC5w4dC115BOTvw8rrkfZrD/6hWuzDSIw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENdkFp+Zsa2nHW3v3stYKlpCRhVeYVjzdrVt2VYkfRAgAr19VvWLLZq9XTDZQKzpEw==",
                             PhoneNumber = "987654321",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "dd854176-af8e-4627-a6ef-64f4b2dce3d4",
+                            SecurityStamp = "9123f6c7-5f48-4176-a027-50c115c3672b",
                             TwoFactorEnabled = false,
                             UserName = "user@user.user"
                         });
@@ -161,6 +161,57 @@ namespace Library.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Books");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            Author = "William Shakespeare",
+                            BookEditionYear = 2011,
+                            Title = "Romeo and Juliet"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            Author = "Henryk Sienkiewicz",
+                            BookEditionYear = 2002,
+                            Title = "Quo vadis"
+                        },
+                        new
+                        {
+                            ID = 3,
+                            Author = "Henryk Sienkiewicz",
+                            BookEditionYear = 2012,
+                            Title = "Quo vadis"
+                        },
+                        new
+                        {
+                            ID = 4,
+                            Author = "Juliusz Słowacki",
+                            BookEditionYear = 2014,
+                            Title = "Balladyna"
+                        },
+                        new
+                        {
+                            ID = 5,
+                            Author = "Juliusz Słowacki",
+                            BookEditionYear = 2021,
+                            Title = "Kordian"
+                        },
+                        new
+                        {
+                            ID = 6,
+                            Author = "Honoré de Balzac",
+                            BookEditionYear = 2018,
+                            Title = "Ojciec Goriot"
+                        },
+                        new
+                        {
+                            ID = 7,
+                            Author = "Witold Gombrowicz",
+                            BookEditionYear = 2013,
+                            Title = "Ferdydurke"
+                        });
                 });
 
             modelBuilder.Entity("Library.Models.Category", b =>
@@ -182,6 +233,36 @@ namespace Library.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("Library.Models.Reserve", b =>
+                {
+                    b.Property<int>("id_rental")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_rental"), 1L, 1);
+
+                    b.Property<int>("Books")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LibraryUser")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("date_from")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime>("date_to")
+                        .HasColumnType("date");
+
+                    b.HasKey("id_rental");
+
+                    b.HasIndex("Books");
+
+                    b.HasIndex("LibraryUser");
+
+                    b.ToTable("Reserve");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -214,14 +295,14 @@ namespace Library.Migrations
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "7d11d815-bd05-4969-aaa2-e7fbfabaa8bd",
+                            ConcurrencyStamp = "3c599fd3-33e5-4576-90c0-c220b02556ef",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7211",
-                            ConcurrencyStamp = "f0d9588d-7c7b-4894-8898-ee2e286dd6a0",
+                            ConcurrencyStamp = "af721511-8485-4ce5-aa8d-65f218618b7b",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -347,6 +428,25 @@ namespace Library.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Library.Models.Reserve", b =>
+                {
+                    b.HasOne("Library.Models.Books", "book")
+                        .WithMany()
+                        .HasForeignKey("Books")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Library.Areas.Identity.Data.LibraryUser", "user")
+                        .WithMany()
+                        .HasForeignKey("LibraryUser")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("book");
+
+                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

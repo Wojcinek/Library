@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Library.Migrations
 {
-    public partial class AddCategoryToDatabase : Migration
+    public partial class All : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,6 +28,8 @@ namespace Library.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -46,6 +48,21 @@ namespace Library.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Books",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Author = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BookEditionYear = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Books", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -168,6 +185,48 @@ namespace Library.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "2c5e174e-3b0e-446f-86af-483d56fd7210", "2e20de0f-0665-47a6-944b-1a7b8ab9db5e", "Admin", "ADMIN" },
+                    { "2c5e174e-3b0e-446f-86af-483d56fd7211", "98eb36bb-866e-4979-b73a-2ea2e16479e3", "User", "USER" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "8e445865-a24d-4543-a6c6-9443d048cdb8", 0, "73c3eaa8-7a0c-4908-a47a-30b55e337d4f", "user@user.user", false, "User", "User", false, null, "USER@USER.USER", "USER@USER.USER", "AQAAAAEAACcQAAAAEEHnNL4Ilhl/ibBh04ttdNl3+AGVmAOlc4YeLgITXbfQ6G/imyNd/P8tkWUVgvZHvQ==", "987654321", false, "13279a38-309d-409e-a120-0e80f0b87a05", false, "user@user.user" },
+                    { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "96252f10-364c-4821-b22d-098c18124c92", "admin@admin.admin", false, "Admin", "Admin", false, null, "ADMIN@ADMIN.ADMIN", "ADMIN@ADMIN.ADMIN", "AQAAAAEAACcQAAAAEAokA0mhHwfj3ubMwMle2keBsUgzk6U+tRBr8Xod1ttjCaCuxlPRqx/NtQKZVCRLXA==", "123456789", false, "58d2abfe-b94b-47ca-86a4-d63a963f255f", false, "admin@admin.admin" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Books",
+                columns: new[] { "ID", "Author", "BookEditionYear", "Title" },
+                values: new object[,]
+                {
+                    { 1, "William Shakespeare", 2011, "Romeo and Juliet" },
+                    { 2, "Henryk Sienkiewicz", 2002, "Quo vadis" },
+                    { 3, "Henryk Sienkiewicz", 2012, "Quo vadis" },
+                    { 4, "Juliusz Słowacki", 2014, "Balladyna" },
+                    { 5, "Juliusz Słowacki", 2021, "Kordian" },
+                    { 6, "Honoré de Balzac", 2018, "Ojciec Goriot" },
+                    { 7, "Witold Gombrowicz", 2013, "Ferdydurke" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "2c5e174e-3b0e-446f-86af-483d56fd7211", "8e445865-a24d-4543-a6c6-9443d048cdb8" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "2c5e174e-3b0e-446f-86af-483d56fd7210", "8e445865-a24d-4543-a6c6-9443d048cdb9" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -224,6 +283,9 @@ namespace Library.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Books");
 
             migrationBuilder.DropTable(
                 name: "Categories");
